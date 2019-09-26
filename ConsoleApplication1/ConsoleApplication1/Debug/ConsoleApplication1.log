@@ -1,4 +1,4 @@
-﻿生成启动时间为 2019/9/26 14:27:56。
+﻿生成启动时间为 2019/9/26 16:05:32。
      1>项目“C:\Users\ASUS 3\Desktop\Git\Individual-Project\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj”在节点 2 上(Rebuild 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -6,15 +6,19 @@
          stdafx.cpp
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"Debug\wf.pch" /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ConsoleApplication1.cpp
          ConsoleApplication1.cpp
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(66): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(34): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(67): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(35): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(50): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(51): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(1193): note: 参见“fscanf”的声明
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(75): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(76): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(138): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
-     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(154): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(139): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(155): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(226): warning C4244: “初始化”: 从“ll”转换到“int”，可能丢失数据
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(228): warning C4244: “=”: 从“const ll”转换到“int”，可能丢失数据
+     1>c:\users\asus 3\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(223): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\ASUS 3\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\ASUS 3\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\ASUS 3\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.lib" /MACHINE:X86 Debug\ConsoleApplication1.obj
@@ -24,4 +28,4 @@
 
 已成功生成。
 
-已用时间 00:00:04.87
+已用时间 00:00:04.92

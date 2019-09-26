@@ -12,6 +12,7 @@
 #include<vector>
 #include<fstream>
 #include <iomanip>
+#include <io.h>
 using namespace std;
 typedef long long ll;
 
@@ -172,6 +173,103 @@ void solve_f(string file)
 /*****************************/
 
 
+
+
+/*****************************/
+// solve_d
+
+void getAllFiles(string path, vector<string>& files)
+{
+	// 文件句柄
+	long hFile = 0;
+	// 文件信息
+	struct _finddata_t fileinfo;
+	string p;
+	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1) {
+		do {
+			// 保存文件的全路径
+			files.push_back(p.assign(path).append("\\").append(fileinfo.name));
+
+		} while (_findnext(hFile, &fileinfo) == 0);  //寻找下一个，成功返回0，否则-1
+		_findclose(hFile);
+	}
+}
+
+void getAllFiles_zi_folder(string path, vector<string>& files) {
+	//文件句柄
+	long hFile = 0;
+	//文件信息
+	struct _finddata_t fileinfo;
+	string p;
+	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1) {
+		do {
+			if ((fileinfo.attrib & _A_SUBDIR)) {  //比较文件类型是否是文件夹
+				if (strcmp(fileinfo.name, ".") != 0 && strcmp(fileinfo.name, "..") != 0) {
+					files.push_back(p.assign(path).append("\\").append(fileinfo.name));
+					//递归搜索
+					getAllFiles(p.assign(path).append("\\").append(fileinfo.name), files);
+				}
+			}
+			else {
+				files.push_back(p.assign(path).append("\\").append(fileinfo.name));
+			}
+		} while (_findnext(hFile, &fileinfo) == 0);  //寻找下一个，成功返回0，否则-1
+		_findclose(hFile);
+	}
+}
+
+void printf_solve_d(int n)
+{
+	freopen("第一步功能2和3.txt", "w", stdout);
+	cout << setw(max_size + 10) << setiosflags(ios::left) << "单词" << "数量" << endl;
+
+	int size_n= sum_word;
+	if (n != -1)
+		size_n = min((ll)n, sum_word);
+
+	for (int i = 0; i < size_n; i++) {
+		cout << setw(max_size + 10 - word[i].word.size()) << setiosflags(ios::left) << word[i].word << word[i].sum << endl;
+	}
+	fclose(stdout);
+}
+void solve_d(string directory, bool _s, int _n) {
+
+
+	vector<string>file;
+	if (_s) { //遍历所有子目录
+		getAllFiles_zi_folder(directory, file);
+		int size = file.size();
+
+		for (int i = 0; i < size; i++) {
+			if (file[i].substr(file[i].size() - 4) == ".txt") {
+				function_first_step(file[i]);
+			}
+
+		}
+	}
+	else {
+		getAllFiles(directory, file);
+		int size = file.size();
+
+		for (int i = 0; i < size; i++) {
+			if (file[i].substr(file[i].size() - 4) == ".txt") {
+				function_first_step(file[i]);
+			}
+
+		}
+	}
+	cout << "结果请查看debug文件夹的文件：第一步功能2和3.txt" << endl;
+	sort(word.begin(), word.end(), cmp_solve_f);
+	printf_solve_d(_n);
+}
+
+// solve_d
+/*****************************/
+
+
+
+
+
 int main(int argc, char* argv[])
 {
 
@@ -184,6 +282,25 @@ int main(int argc, char* argv[])
 		string file = argv[2];
 		solve_f(file);
 	}
+	else if (strcmp(argv[1], "-d") == 0) {
+		int n = -1;
+		bool _s = false;
+		for (int i = 0; i < argc; i++) {
+			if (strcmp(argv[i], "-n") == 0) {
+				string number = argv[i+1];
+				int size = number.size();
+				n = 0;
+				for (int j = 0; j < size; j++)
+					n = n * 10 + number[j] - '0';
+			}
+			if (strcmp(argv[i], "-s") == 0) {
+				_s = true;
+			}
+		}
+		string directory = argv[argc - 1];
+		solve_d(directory, _s, n);
+	}
+
 
     return 0;
 }
