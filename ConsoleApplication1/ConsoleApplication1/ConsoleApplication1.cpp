@@ -97,6 +97,8 @@ struct solve_f_node {
 vector<solve_f_node> word;
 map<string, ll>index_word;
 map<string, ll>::iterator iterfind;
+map<string, ll>stopWord;
+map<string, ll>::iterator iter_stopWord;
 ll sum_word=0;
 int max_size=0;
 bool cmp_solve_f(solve_f_node x, solve_f_node y) {
@@ -106,8 +108,10 @@ bool cmp_solve_f(solve_f_node x, solve_f_node y) {
 		return x.sum > y.sum;
 }
 
-void function_first_step(string file)
+void function_first_step(string file,bool _x=false)
 {
+
+
 	temp_word.sum = 1;
 	ifstream book;
 	book.open(file);
@@ -124,7 +128,16 @@ void function_first_step(string file)
 				test_word += str[i];
 
 			else if (!test_word.empty() || (i == size - 1 && str[i] >= 'a'&&str[i] <= 'z' || str[i] >= '0'&&str[i] <= '9')) {
+				if (_x) { //_x代表去掉停词表中的单词 如果test_word是里面的，clear然后continue
+					iter_stopWord = stopWord.find(test_word);
+					if (iter_stopWord == stopWord.end()) { //带表停词表没这这个单词
 
+					}
+					else {
+						test_word.clear();
+						continue;
+					}
+				}
 				iterfind = index_word.find(test_word);
 				if (iterfind == index_word.end()) { //还没出现过这个单词，插入到vector中
 					temp_word.word = test_word;
@@ -177,7 +190,6 @@ void solve_f(string file)
 
 /*****************************/
 // solve_d
-
 void getAllFiles(string path, vector<string>& files)
 {
 	// 文件句柄
@@ -262,12 +274,55 @@ void solve_d(string directory, bool _s, int _n) {
 	sort(word.begin(), word.end(), cmp_solve_f);
 	printf_solve_d(_n);
 }
-
 // solve_d
 /*****************************/
 
 
 
+/*****************************/
+// solve_x
+void init_map_stopWordFile(string stopWord_file) {
+	ifstream stopWordFile;
+	stopWordFile.open(stopWord_file);
+	string str;
+
+	while (!stopWordFile.eof()) {
+		getline(stopWordFile, str);
+		int size = str.size();
+		string test_word;
+		for (int i = 0; i < size; i++) {
+			if (str[i] >= 'A'&&str[i] <= 'Z') //大写字母转小写
+				str[i] = str[i] + 'a' - 'A';
+
+			if (str[i] >= 'a'&&str[i] <= 'z' || str[i] >= '0'&&str[i] <= '9') //当前位是字母或数字加到单词字符串后面
+				test_word += str[i];
+
+			else if (!test_word.empty() || (i == size - 1 && str[i] >= 'a'&&str[i] <= 'z' || str[i] >= '0'&&str[i] <= '9')) {
+				stopWord[test_word] = 1;//单词插入到map中
+				test_word.clear();
+			}
+		}
+	}
+	stopWordFile.close();
+}
+void printf_solve_x() {
+	freopen("第二步功能4.txt", "w", stdout);
+	cout << setw(max_size + 10) << setiosflags(ios::left) << "单词" << "数量" << endl;
+	for (int i = 0; i < sum_word; i++) {
+		cout << setw(max_size + 10 - word[i].word.size()) << setiosflags(ios::left) << word[i].word << word[i].sum << endl;
+	}
+	fclose(stdout);
+}
+void solve_x(string stopWord, string file){
+	init_map_stopWordFile(stopWord);
+	function_first_step(file, true);
+	sort(word.begin(), word.end(), cmp_solve_f);
+	cout << "结果请查看debug文件夹的文件：第二步功能4.txt" << endl;
+	printf_solve_x();
+}
+
+// solve_x
+/*****************************/
 
 
 int main(int argc, char* argv[])
@@ -299,6 +354,11 @@ int main(int argc, char* argv[])
 		}
 		string directory = argv[argc - 1];
 		solve_d(directory, _s, n);
+	}
+	else if (strcmp(argv[1], "-x") == 0) {
+		string stopword = argv[2];
+		string file = argv[4];
+		solve_x(stopword, file);
 	}
 
 
