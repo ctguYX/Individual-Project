@@ -324,10 +324,120 @@ void solve_x(string stopWord, string file){
 // solve_x
 /*****************************/
 
+/*****************************/
+// solve_p
+struct node_phrase {
+	string s;
+	int sum;
+}tem_phrase;
+vector<node_phrase> phrase;
+map<string, ll>phrase_map;
+map<string, ll>::iterator iter_phrase;
+ll sum_phrase = 0;
+bool cmp_phrase(node_phrase x, node_phrase y) {
+	if (x.sum == y.sum) {
+		return x.s < y.s;
+	}
+	else
+		return x.sum > y.sum;
+}
+bool judge_alphabet(char c) {
+	if (c >= 'a'&&c <= 'z' || c >= 'A'&&c <= 'Z') {
+		return true;
+	}
+	return false;
+}
+void solve_p(string file, int number) {
+	ifstream phraseFile;
+	phraseFile.open(file);
+	string str;
+
+	while (!phraseFile.eof()) {
+		getline(phraseFile, str);
+		int size = str.size();
+		int start = 0, end = 0;
+		while (!judge_alphabet(str[start]) && start < size)
+			start++;
+		int num_word = 0;
+		end = start;
+		tem_phrase.sum = 1;
+		for (; end < size; end++) {
+			//处理start到end有number个单词
+			if (num_word == number) {
+				string phr = str.substr(start, end - start + 1 - 2);//此时end在空格后面一位
+				iter_phrase = phrase_map.find(phr);
+	//			cout << "短语:" << phr << endl;
+				if (iter_phrase == phrase_map.end()) { //还没出现过这个短语，插入到vector中
+					tem_phrase.s = phr;
+					phrase.push_back(tem_phrase);
+					phrase_map[phr] = sum_phrase;
+					sum_phrase++;
+				}
+				else { //有这个短语，数量+1
+					phrase[iter_phrase->second].sum++;
+				}
+				//然后起点往后移动一个单词，单词数-1
+				num_word--;
+				while (judge_alphabet(str[start])) { //是字母就代表还在第一个单词里
+					start++;
+				}
+				start++;
+			}
+
+			if (!judge_alphabet(str[end]) && str[end] != ' ') {//不是字母也不是空格，重置起点
+				num_word++;
+				if (num_word == number) { //有可能是句子结尾，如果刚好够单词数量，也可以，存起来之后，起点重置
+					string phr = str.substr(start, end - start + 1 - 2);
+					iter_phrase = phrase_map.find(phr);
+		//			cout << "短语:" << phr << endl;
+					if (iter_phrase == phrase_map.end()) { //还没出现过这个短语，插入到vector中
+						tem_phrase.s = phr;
+						phrase.push_back(tem_phrase);
+						phrase_map[phr] = sum_phrase;
+						sum_phrase++;
+					}
+					else { //有这个短语，数量+1
+						phrase[iter_phrase->second].sum++;
+					}
+				}
+
+				start = end + 1; //起点置为当前位的下一位
+				while (!judge_alphabet(str[start]) && start < size) //找一个字母当起点
+					start++;
+				num_word = 0;
+				end = start - 1;
+			}
+			else { //是字母或者空格
+				if (str[end] == ' ')
+					num_word++;
+			}
+		}
+	}
+	sort(phrase.begin(), phrase.end(), cmp_phrase);
+	cout << "结果请查看debug文件夹的文件：第三步功能5.txt" << endl;
+	freopen("第三步功能5.txt", "w", stdout);
+	int size_phr = phrase.size();
+	for (int i = 0; i < size_phr; i++) {
+		cout << phrase[i].s << endl;
+	}
+	fclose(stdout);
+}
+
+// solve_p
+/*****************************/
 
 int main(int argc, char* argv[])
 {
-
+	//判读功能5和功能6
+	int flag_v_p = 0;
+	for (int i = 0; i < argc; i++) {
+		if (strcmp(argv[i], "-p") == 0) {
+			flag_v_p = 5;
+		}
+		else if (strcmp(argv[i], "-v" )== 0){
+			flag_v_p = 6;
+		}
+	}
 
 	if (strcmp(argv[1], "-c") == 0) {
 		string file = argv[2];
@@ -360,7 +470,30 @@ int main(int argc, char* argv[])
 		string file = argv[4];
 		solve_x(stopword, file);
 	}
+	else if (flag_v_p == 5) {
+		string file;
+		int number=0;
+		for (int i = 1; i < argc; i++) {
+			if (strcmp(argv[i], "-p") != 0) {
+			//	cout << "argv[" << i << "]=" << argv[i] << endl;
+				int size = strlen(argv[i]);
+				if (argv[i][size - 3] == 't'&&argv[i][size - 2] == 'x'&&argv[i][size - 1] == 't') {
+					file = argv[i];
+				}
+				else {
+					for (int j = 0; j < size; j++) {
+						number = number * 10 + argv[i][j] - '0';
+					}
+				}
 
+			}
+		}
+		solve_p(file, number);
+		//cout << "number=" << number << " file=" << file << endl;
+	}
+	else if (flag_v_p == 6) {
+
+	}
 
     return 0;
 }
