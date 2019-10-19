@@ -16,6 +16,104 @@
 using namespace std;
 typedef long long ll;
 
+bool is_have_v = false; //判断是否要动词形态归一化
+
+
+/*****************************/
+//solve_v
+bool judge_alphabet(char c) {
+	if (c >= 'a'&&c <= 'z' || c >= 'A'&&c <= 'Z') {
+		return true;
+	}
+	return false;
+}
+vector<string> verb;
+map<string, ll>verb_map;//存动词的变形的原形下标
+map<string, ll>::iterator iter_verb;
+ll sum_verb = 0;
+void solve_v(string file) {
+	ifstream verbFile;
+	verbFile.open(file);
+	string str;
+
+	while (!verbFile.eof()) {
+		getline(verbFile, str);
+		int size = str.size();
+		int start = 0, end = 0;
+		while (!judge_alphabet(str[start]) && start < size)
+			start++;
+		end = start;
+		bool flag_yuan = true;
+		for (; end <= size; end++) {
+			if (str[end] == ' ' || end == size) {
+				string word = str.substr(start, end - start);//end在单词之间的空格位置
+				start = end + 1;
+				if (flag_yuan) {
+					//			cout << "动词原形:" << word << endl;
+					flag_yuan = false;
+					verb.push_back(word);
+				}
+				else {
+					//		cout << "动词其他形态:" << word << endl;
+					verb_map[word] = sum_verb;
+				}
+			}
+		}
+		sum_verb++;
+	}
+	verbFile.close();
+}
+void huan_yuan_v(string &str) { //传一个字符串，将其中非原形单词改为原形
+								//	cout << "huan_yuan_v str=" << str << endl;
+	int size = str.size();
+	int start = 0, end = 0;
+	while (!judge_alphabet(str[start]) && start < size)
+		start++;
+	end = start;
+	for (; end < size; end++) {
+		//		cout<<"statrt="<<start << " end=" << end <<" size="<<size<< endl;
+		//		cout << "str=" << str << endl << endl;
+		if (!judge_alphabet(str[end]) || end == size - 1) {
+			if (!judge_alphabet(str[end]))
+				end--;
+			string word = str.substr(start, end - start + 1);
+
+			iter_verb = verb_map.find(word);
+			if (iter_verb != verb_map.end()) { //这个单词是已有动词的变形
+											   //			cout << "动词变形:" << word << endl;
+				string yuan_verb = verb[iter_verb->second];
+				int size_yuan = yuan_verb.size();
+				int size_bianXing = word.size();
+				if (size_bianXing >= size_yuan) { //变形比原形字母多，覆盖后删除多余
+					for (int i = start, j = 0; j < size_yuan; i++, j++)
+						str[i] = yuan_verb[j];
+					if (size_bianXing > size_yuan) {
+						str.erase(start + size_yuan, size_bianXing - size_yuan);
+						size = size - (size_bianXing - size_yuan);
+						end = end - (size_bianXing - size_yuan);
+					}
+
+				}
+				else { //原形比变形多，需要增加空位
+					string front = str.substr(0, start);
+					string back = str.substr(end + 1);
+					string s = front + yuan_verb + back;
+					swap(str, s);
+					size = str.size();
+					end = start + size_yuan;
+				}
+			}
+			start = end + 1;
+			while (!judge_alphabet(str[start]) && start < size)
+				start++;
+			end = start;
+		}
+	}
+
+}
+//solve_v
+/*****************************/
+
 
 /*****************************/
 // solve -c
@@ -32,8 +130,11 @@ bool cmp_solve_c(solve_c_node x, solve_c_node y) {
 }
 void solve_c(string file)
 {
-	FILE *book = fopen(file.c_str(), "r");
-	char str[1000];
+	ifstream book;
+	book.open(file);
+	string str;
+
+
 	ll sum_alphabet = 0;
 
 	solve_c_node sum[52];
@@ -48,9 +149,13 @@ void solve_c(string file)
 		sum[i].pinlv = 0.0;
 	}
 
-	while (fscanf(book, "%s", str) != EOF) {
+	while (!book.eof()) {
+		getline(book, str);
+		if(is_have_v==true)
+			huan_yuan_v(str);
+
 		for (int i = 0; str[i] != '\0'; i++) {
-			if (str[i] >= 'a' && str[i] <= 'z' ) {
+			if (str[i] >= 'a' && str[i] <= 'z') {
 				sum_alphabet++;
 				sum[str[i] - 'a' + 26].num++;
 			}
@@ -60,7 +165,7 @@ void solve_c(string file)
 			}
 		}
 	}
-	fclose(book);
+	book.close();
 
 	for (int i = 0; i < 52; i++) {
 		sum[i].pinlv = sum[i].num*1.0 / sum_alphabet;
@@ -68,7 +173,7 @@ void solve_c(string file)
 		sum[i].pinlv = temp*1.0 / 100; //小数多位的时候排序时和需求不一样
 	}
 
-	sort(sum,sum + 52, cmp_solve_c);
+	sort(sum, sum + 52, cmp_solve_c);
 
 
 	cout << "结果请查看debug文件夹的文件：第零步功能.txt" << endl;
@@ -99,8 +204,8 @@ map<string, ll>index_word;
 map<string, ll>::iterator iterfind;
 map<string, ll>stopWord;
 map<string, ll>::iterator iter_stopWord;
-ll sum_word=0;
-int max_size=0;
+ll sum_word = 0;
+int max_size = 0;
 bool cmp_solve_f(solve_f_node x, solve_f_node y) {
 	if (x.sum == y.sum)
 		return x.word < y.word;
@@ -108,7 +213,7 @@ bool cmp_solve_f(solve_f_node x, solve_f_node y) {
 		return x.sum > y.sum;
 }
 
-void function_first_step(string file,bool _x=false)
+void function_first_step(string file, bool _x = false)
 {
 
 
@@ -118,6 +223,10 @@ void function_first_step(string file,bool _x=false)
 	string str;
 	while (!book.eof()) {
 		getline(book, str);
+
+		if (is_have_v == true)
+			huan_yuan_v(str);
+
 		int size = str.size();
 		string test_word;
 		for (int i = 0; i < size; i++) {
@@ -156,7 +265,7 @@ void function_first_step(string file,bool _x=false)
 		}
 	}
 	book.close();
-	
+
 }
 // function_first_step
 /*****************************/
@@ -166,9 +275,9 @@ void function_first_step(string file,bool _x=false)
 void printf_solve_f()
 {
 	freopen("第一步功能1.txt", "w", stdout);
-	cout <<setw(max_size+10) << setiosflags(ios::left) << "单词" << "数量" << endl;
+	cout << setw(max_size + 10) << setiosflags(ios::left) << "单词" << "数量" << endl;
 	for (int i = 0; i < sum_word; i++) {
-		cout << setw(max_size+10-word[i].word.size()) << setiosflags(ios::left)<< word[i].word << word[i].sum << endl;
+		cout << setw(max_size + 10 - word[i].word.size()) << setiosflags(ios::left) << word[i].word << word[i].sum << endl;
 	}
 	fclose(stdout);
 
@@ -235,7 +344,7 @@ void printf_solve_d(int n)
 	freopen("第一步功能2和3.txt", "w", stdout);
 	cout << setw(max_size + 10) << setiosflags(ios::left) << "单词" << "数量" << endl;
 
-	int size_n= sum_word;
+	int size_n = sum_word;
 	if (n != -1)
 		size_n = min((ll)n, sum_word);
 
@@ -288,6 +397,9 @@ void init_map_stopWordFile(string stopWord_file) {
 
 	while (!stopWordFile.eof()) {
 		getline(stopWordFile, str);
+		if (is_have_v == true)
+			huan_yuan_v(str);
+
 		int size = str.size();
 		string test_word;
 		for (int i = 0; i < size; i++) {
@@ -313,7 +425,7 @@ void printf_solve_x() {
 	}
 	fclose(stdout);
 }
-void solve_x(string stopWord, string file){
+void solve_x(string stopWord, string file) {
 	init_map_stopWordFile(stopWord);
 	function_first_step(file, true);
 	sort(word.begin(), word.end(), cmp_solve_f);
@@ -323,6 +435,10 @@ void solve_x(string stopWord, string file){
 
 // solve_x
 /*****************************/
+
+
+
+
 
 /*****************************/
 // solve_p
@@ -341,12 +457,7 @@ bool cmp_phrase(node_phrase x, node_phrase y) {
 	else
 		return x.sum > y.sum;
 }
-bool judge_alphabet(char c) {
-	if (c >= 'a'&&c <= 'z' || c >= 'A'&&c <= 'Z') {
-		return true;
-	}
-	return false;
-}
+
 void solve_p(string file, int number) {
 	ifstream phraseFile;
 	phraseFile.open(file);
@@ -354,6 +465,13 @@ void solve_p(string file, int number) {
 
 	while (!phraseFile.eof()) {
 		getline(phraseFile, str);
+	//	cout << "还原前字符串:" << str << endl;
+		//		cout << "还原前字符串:" << str << endl;
+		if (is_have_v == true)
+			huan_yuan_v(str);
+	//	cout << "还原后字符串:" << str << endl << endl;
+
+
 		int size = str.size();
 		int start = 0, end = 0;
 		while (!judge_alphabet(str[start]) && start < size)
@@ -366,7 +484,7 @@ void solve_p(string file, int number) {
 			if (num_word == number) {
 				string phr = str.substr(start, end - start + 1 - 2);//此时end在空格后面一位
 				iter_phrase = phrase_map.find(phr);
-	//			cout << "短语:" << phr << endl;
+				//			cout << "短语:" << phr << endl;
 				if (iter_phrase == phrase_map.end()) { //还没出现过这个短语，插入到vector中
 					tem_phrase.s = phr;
 					phrase.push_back(tem_phrase);
@@ -389,7 +507,7 @@ void solve_p(string file, int number) {
 				if (num_word == number) { //有可能是句子结尾，如果刚好够单词数量，也可以，存起来之后，起点重置
 					string phr = str.substr(start, end - start + 1 - 2);
 					iter_phrase = phrase_map.find(phr);
-		//			cout << "短语:" << phr << endl;
+					//			cout << "短语:" << phr << endl;
 					if (iter_phrase == phrase_map.end()) { //还没出现过这个短语，插入到vector中
 						tem_phrase.s = phr;
 						phrase.push_back(tem_phrase);
@@ -426,75 +544,133 @@ void solve_p(string file, int number) {
 // solve_p
 /*****************************/
 
-int main(int argc, char* argv[])
-{
-	//判读功能5和功能6
-	int flag_v_p = 0;
-	for (int i = 0; i < argc; i++) {
-		if (strcmp(argv[i], "-p") == 0) {
-			flag_v_p = 5;
-		}
-		else if (strcmp(argv[i], "-v" )== 0){
-			flag_v_p = 6;
-		}
-	}
-
-	if (strcmp(argv[1], "-c") == 0) {
-		string file = argv[2];
-		solve_c(file);
-	}
-	else if (strcmp(argv[1], "-f") == 0) {
-		string file = argv[2];
-		solve_f(file);
-	}
-	else if (strcmp(argv[1], "-d") == 0) {
-		int n = -1;
-		bool _s = false;
-		for (int i = 0; i < argc; i++) {
-			if (strcmp(argv[i], "-n") == 0) {
-				string number = argv[i+1];
-				int size = number.size();
-				n = 0;
-				for (int j = 0; j < size; j++)
-					n = n * 10 + number[j] - '0';
-			}
-			if (strcmp(argv[i], "-s") == 0) {
-				_s = true;
-			}
-		}
-		string directory = argv[argc - 1];
-		solve_d(directory, _s, n);
-	}
-	else if (strcmp(argv[1], "-x") == 0) {
-		string stopword = argv[2];
-		string file = argv[4];
-		solve_x(stopword, file);
-	}
-	else if (flag_v_p == 5) {
-		string file;
-		int number=0;
-		for (int i = 1; i < argc; i++) {
-			if (strcmp(argv[i], "-p") != 0) {
-			//	cout << "argv[" << i << "]=" << argv[i] << endl;
-				int size = strlen(argv[i]);
-				if (argv[i][size - 3] == 't'&&argv[i][size - 2] == 'x'&&argv[i][size - 1] == 't') {
-					file = argv[i];
+string getFile(int &start, char *argv[],int size) { //从start开始获得一个文件名,start指向文件名后的下一个单词
+	string file;
+	string kong_ge = " ";
+//	cout <<"file="<< file << endl;
+	string end = ".txt";
+	for (; start < size; start++) {
+		string te = argv[start];
+		file += te;
+		int t_size = te.size();
+		int sum_deng = 0;
+		if (t_size >= 4) {
+			for (int i = t_size - 4, j = 0; j < 4; i++, j++) {
+			//	cout << "te[i]=" << te[i] << " end[j]=" << end[j] << endl;
+				if (te[i] != end[j]) {
+					break;
 				}
-				else {
-					for (int j = 0; j < size; j++) {
-						number = number * 10 + argv[i][j] - '0';
-					}
-				}
-
+				else
+					sum_deng++;
 			}
 		}
-		solve_p(file, number);
-		//cout << "number=" << number << " file=" << file << endl;
-	}
-	else if (flag_v_p == 6) {
+		if (sum_deng==4)
+			break;
 
+		file += kong_ge;
 	}
-
-    return 0;
+	start++;
+	return file;
 }
 
+
+
+int main(int argc, char* argv[])
+{
+	bool _c = false; //功能0 字母频率    wf.exe -c <file name> 
+	string file_c;
+	bool _f = false;// 功能1 输出文件中所有不重复的单词    wf.exe -f <file>  
+	bool _d = false;//功能2 对一个目录所有文件执行功能1 wf.exe -d <directory> 
+	bool _s = false;  //功能2扩展，遍历目录下所有子目录  wf.exe -d -s  <directory> 
+	int _n = -1;   //功能2扩展，输出出现次数最多的前 n 个单词  wf.exe -d -s  <directory> -n <number> (_n可能在前面)
+	bool _x = false; //功能2扩展 支持听词表  wf.exe -x <stopwordfile>  -f <file> 
+	bool _p = false; //功能5  输出<number>个词的短语    wf.exe -p <number>  <file> 
+	bool _v = false; //以上功能扩展 支持动词形态的归一化 wf.exe -v <verb file> .... 
+	string file_v;
+	
+	
+
+
+
+
+
+
+
+
+
+	//类型判断完后
+	if (_v == true) { //含有-v参数 支持动词形态的归一化
+		is_have_v = true;
+		solve_v(file_v);
+	}
+
+
+	//判读功能5和功能6
+	//int flag_v_p = 0;
+	//for (int i = 0; i < argc; i++) {
+	//	if (strcmp(argv[i], "-p") == 0) {
+	//		flag_v_p = 5;
+	//	}
+	//	else if (strcmp(argv[i], "-v") == 0) {
+	//		flag_v_p = 6;
+	//	}
+	//}
+
+	//if (strcmp(argv[1], "-c") == 0) {
+	//	string file = argv[2];
+	//	solve_c(file);
+	//}
+	//else if (strcmp(argv[1], "-f") == 0) {
+	//	string file = argv[2];
+	//	solve_f(file);
+	//}
+	//else if (strcmp(argv[1], "-d") == 0) {
+	//	int n = -1;
+	//	bool _s = false;
+	//	for (int i = 0; i < argc; i++) {
+	//		if (strcmp(argv[i], "-n") == 0) {
+	//			string number = argv[i + 1];
+	//			int size = number.size();
+	//			n = 0;
+	//			for (int j = 0; j < size; j++)
+	//				n = n * 10 + number[j] - '0';
+	//		}
+	//		if (strcmp(argv[i], "-s") == 0) {
+	//			_s = true;
+	//		}
+	//	}
+	//	string directory = argv[argc - 1];
+	//	solve_d(directory, _s, n);
+	//}
+	//else if (strcmp(argv[1], "-x") == 0) {
+	//	string stopword = argv[2];
+	//	string file = argv[4];
+	//	solve_x(stopword, file);
+	//}
+	//else if (flag_v_p == 5) {
+	//	string file;
+	//	int number = 0;
+	//	for (int i = 1; i < argc; i++) {
+	//		if (strcmp(argv[i], "-p") != 0) {
+	//			//	cout << "argv[" << i << "]=" << argv[i] << endl;
+	//			int size = strlen(argv[i]);
+	//			if (argv[i][size - 3] == 't'&&argv[i][size - 2] == 'x'&&argv[i][size - 1] == 't') {
+	//				file = argv[i];
+	//			}
+	//			else {
+	//				for (int j = 0; j < size; j++) {
+	//					number = number * 10 + argv[i][j] - '0';
+	//				}
+	//			}
+
+	//		}
+	//	}
+	//	solve_p(file, number);
+	//	//cout << "number=" << number << " file=" << file << endl;
+	//}
+	////	else if (flag_v_p == 6) {
+
+	////}
+
+	return 0;
+}
