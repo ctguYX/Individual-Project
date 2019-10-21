@@ -223,9 +223,10 @@ void function_first_step(string file, bool _x = false)
 	string str;
 	while (!book.eof()) {
 		getline(book, str);
-
+//		cout << str << endl;
 		if (is_have_v == true)
 			huan_yuan_v(str);
+//		cout << str << endl;
 
 		int size = str.size();
 		string test_word;
@@ -347,6 +348,7 @@ void printf_solve_d(int n)
 	int size_n = sum_word;
 	if (n != -1)
 		size_n = min((ll)n, sum_word);
+//	cout << "size_n=" << size_n << endl;
 
 	for (int i = 0; i < size_n; i++) {
 		cout << setw(max_size + 10 - word[i].word.size()) << setiosflags(ios::left) << word[i].word << word[i].sum << endl;
@@ -362,6 +364,7 @@ void solve_d(string directory, bool _s, int _n) {
 		int size = file.size();
 
 		for (int i = 0; i < size; i++) {
+	//		cout <<"file[i]="<< file[i] << endl;
 			if (file[i].substr(file[i].size() - 4) == ".txt") {
 				function_first_step(file[i]);
 			}
@@ -373,6 +376,7 @@ void solve_d(string directory, bool _s, int _n) {
 		int size = file.size();
 
 		for (int i = 0; i < size; i++) {
+	//		cout << "file[i]=" << file[i] << endl;
 			if (file[i].substr(file[i].size() - 4) == ".txt") {
 				function_first_step(file[i]);
 			}
@@ -544,7 +548,7 @@ void solve_p(string file, int number) {
 // solve_p
 /*****************************/
 
-string getFile(int &start, char *argv[],int size) { //从start开始获得一个文件名,start指向文件名后的下一个单词
+string getFile(int &start, char *argv[],int size) { //从start开始获得一个文件名,start指向文件名最后一个单词
 	string file;
 	string kong_ge = " ";
 //	cout <<"file="<< file << endl;
@@ -569,7 +573,6 @@ string getFile(int &start, char *argv[],int size) { //从start开始获得一个文件名,
 
 		file += kong_ge;
 	}
-	start++;
 	return file;
 }
 
@@ -577,100 +580,165 @@ string getFile(int &start, char *argv[],int size) { //从start开始获得一个文件名,
 
 int main(int argc, char* argv[])
 {
+	//for (int i = 0; i < argc; i++) {
+	//	cout << argv[i] << endl;
+	//}
+	string file_book;
 	bool _c = false; //功能0 字母频率    wf.exe -c <file name> 
-	string file_c;
 	bool _f = false;// 功能1 输出文件中所有不重复的单词    wf.exe -f <file>  
-	bool _d = false;//功能2 对一个目录所有文件执行功能1 wf.exe -d <directory> 
+	bool _d = false;//功能2 对一个目录所有文件执行功能1 wf.exe -d <directory>
+	string file_directory;
 	bool _s = false;  //功能2扩展，遍历目录下所有子目录  wf.exe -d -s  <directory> 
-	int _n = -1;   //功能2扩展，输出出现次数最多的前 n 个单词  wf.exe -d -s  <directory> -n <number> (_n可能在前面)
-	bool _x = false; //功能2扩展 支持听词表  wf.exe -x <stopwordfile>  -f <file> 
+	bool _n = false;   //功能2扩展，输出出现次数最多的前 n 个单词  wf.exe -d -s  <directory> -n <number> (_n可能在前面)
+	int number_n=-1;
+	bool _x = false; //功能1扩展 支持停词表  wf.exe -x <stopwordfile>  -f <file> 
+	string file_stopword;
 	bool _p = false; //功能5  输出<number>个词的短语    wf.exe -p <number>  <file> 
-	bool _v = false; //以上功能扩展 支持动词形态的归一化 wf.exe -v <verb file> .... 
-	string file_v;
+	int number_p;
+	bool _v = false; //以上功能扩展 支持动词形态的归一化  wf.exe -v <verb file> .... 
+	string file_verb;
 	
-	
+	for (int start = 0; start < argc; start++) {
+		if (strcmp(argv[start], "-c") == 0) {
+			_c = true;
+			start++;
+			file_book = getFile(start, argv, argc);
+		}
+		else if (strcmp(argv[start], "-f") == 0) {
+			_f = true;
+			start++;
+			file_book = getFile(start, argv, argc);
+		}
+		else if (strcmp(argv[start], "-d") == 0) {
+			_d = true;
+			start++;
+			if (strcmp(argv[start], "-s") == 0) {
+				_s = true;
+				start++;
+				file_directory = argv[start];
+			}
+			else
+				file_directory = argv[start];
+		}
+		else if (strcmp(argv[start], "-n") == 0) {
+			_n = true;
+			number_n = 0;
+			start++;
+			string number = argv[start];
+			int size = number.size();
+			number_n = 0;
+			for (int j = 0; j < size; j++)
+				number_n = number_n * 10 + number[j] - '0';
+		}
+		else if (strcmp(argv[start], "-x") == 0) {
+			_x = true;
+			start++;
+			file_stopword = getFile(start, argv, argc);
+		}
+		else if (strcmp(argv[start], "-p") == 0) {
+			_p = true;
+			start++;
+	//		cout << "argv[start]=" << argv[start] << endl;
+			string number = argv[start];
+			int size = number.size();
+			number_p = 0;
+			for (int j = 0; j < size; j++)
+				number_p = number_p * 10 + number[j] - '0';
+			start++;
+			file_book = getFile(start, argv, argc);
 
-
-
-
-
-
-
+		}
+		else if (strcmp(argv[start], "-v") == 0) {
+			_v = true;
+			start++;
+			file_verb = getFile(start, argv, argc);
+		}
+	}
 
 
 	//类型判断完后
 	if (_v == true) { //含有-v参数 支持动词形态的归一化
 		is_have_v = true;
-		solve_v(file_v);
+		solve_v(file_verb);
 	}
 
+	if (_c == true) { // 输出字母频率
+//		cout << "_c=true file=" << file_book << endl;
+		solve_c(file_book);
+	}
+	else if (_f == true && _x == false) { //输出文件中所有不重复的单词
+//		cout << "_f=true file=" << file_book << endl;
+		solve_f(file_book);
+	}
+	else if (_d == true) {
+	//	cout << "_d=true file_directory=" << file_directory<< endl;
+		solve_d(file_directory, _s, number_n);
+	}
+	else if (_x == true) {
+//		cout << "_x=true file_stopword=" << file_stopword<<" file=" << file_book << endl;
+		solve_x(file_stopword, file_book);
+	}
+	else if (_p == true) {
+		solve_p(file_book, number_p);
+	}
+//	system("1");
+	/*
+	if (strcmp(argv[1], "-c") == 0) {
+		string file = argv[2];
+		solve_c(file);
+	}
+	else if (strcmp(argv[1], "-f") == 0) {
+		string file = argv[2];
+		solve_f(file);
+	}
+	else if (strcmp(argv[1], "-d") == 0) {
+		int n = -1;
+		bool _s = false;
+		for (int i = 0; i < argc; i++) {
+			if (strcmp(argv[i], "-n") == 0) {
+				string number = argv[i + 1];
+				int size = number.size();
+				n = 0;
+				for (int j = 0; j < size; j++)
+					n = n * 10 + number[j] - '0';
+			}
+			if (strcmp(argv[i], "-s") == 0) {
+				_s = true;
+			}
+		}
+		string directory = argv[argc - 1];
+		solve_d(directory, _s, n);
+	}
+	else if (strcmp(argv[1], "-x") == 0) {
+		string stopword = argv[2];
+		string file = argv[4];
+		solve_x(stopword, file);
+	}
+	else if (flag_v_p == 5) {
+		string file;
+		int number = 0;
+		for (int i = 1; i < argc; i++) {
+			if (strcmp(argv[i], "-p") != 0) {
+				//	cout << "argv[" << i << "]=" << argv[i] << endl;
+				int size = strlen(argv[i]);
+				if (argv[i][size - 3] == 't'&&argv[i][size - 2] == 'x'&&argv[i][size - 1] == 't') {
+					file = argv[i];
+				}
+				else {
+					for (int j = 0; j < size; j++) {
+						number = number * 10 + argv[i][j] - '0';
+					}
+				}
 
-	//判读功能5和功能6
-	//int flag_v_p = 0;
-	//for (int i = 0; i < argc; i++) {
-	//	if (strcmp(argv[i], "-p") == 0) {
-	//		flag_v_p = 5;
-	//	}
-	//	else if (strcmp(argv[i], "-v") == 0) {
-	//		flag_v_p = 6;
-	//	}
-	//}
+			}
+		}
+		solve_p(file, number);
+		//cout << "number=" << number << " file=" << file << endl;
+	}
+	//	else if (flag_v_p == 6) {
 
-	//if (strcmp(argv[1], "-c") == 0) {
-	//	string file = argv[2];
-	//	solve_c(file);
 	//}
-	//else if (strcmp(argv[1], "-f") == 0) {
-	//	string file = argv[2];
-	//	solve_f(file);
-	//}
-	//else if (strcmp(argv[1], "-d") == 0) {
-	//	int n = -1;
-	//	bool _s = false;
-	//	for (int i = 0; i < argc; i++) {
-	//		if (strcmp(argv[i], "-n") == 0) {
-	//			string number = argv[i + 1];
-	//			int size = number.size();
-	//			n = 0;
-	//			for (int j = 0; j < size; j++)
-	//				n = n * 10 + number[j] - '0';
-	//		}
-	//		if (strcmp(argv[i], "-s") == 0) {
-	//			_s = true;
-	//		}
-	//	}
-	//	string directory = argv[argc - 1];
-	//	solve_d(directory, _s, n);
-	//}
-	//else if (strcmp(argv[1], "-x") == 0) {
-	//	string stopword = argv[2];
-	//	string file = argv[4];
-	//	solve_x(stopword, file);
-	//}
-	//else if (flag_v_p == 5) {
-	//	string file;
-	//	int number = 0;
-	//	for (int i = 1; i < argc; i++) {
-	//		if (strcmp(argv[i], "-p") != 0) {
-	//			//	cout << "argv[" << i << "]=" << argv[i] << endl;
-	//			int size = strlen(argv[i]);
-	//			if (argv[i][size - 3] == 't'&&argv[i][size - 2] == 'x'&&argv[i][size - 1] == 't') {
-	//				file = argv[i];
-	//			}
-	//			else {
-	//				for (int j = 0; j < size; j++) {
-	//					number = number * 10 + argv[i][j] - '0';
-	//				}
-	//			}
-
-	//		}
-	//	}
-	//	solve_p(file, number);
-	//	//cout << "number=" << number << " file=" << file << endl;
-	//}
-	////	else if (flag_v_p == 6) {
-
-	////}
+	*/
 
 	return 0;
 }

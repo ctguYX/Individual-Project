@@ -1,6 +1,11 @@
-单词                               数量
-the                             1062
-and                             957
-i                                 885
-to                               667
-a                                 616
+单词                    数量
+the                  69
+of                    60
+to                    36
+a                      24
+in                    21
+is                    19
+and                  18
+negro              15
+our                  13
+we                    12

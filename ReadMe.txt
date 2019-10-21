@@ -1,30 +1,37 @@
-﻿========================================================================
-    控制台应用程序：ConsoleApplication1 项目概述
-========================================================================
+﻿此程序支持的功能如下：
+所有功能支持命令行增加一个参数-v:支持动词形态的归一化
+支持-n，-d，-s，-c，-f，-x，-p的位置互换，不过指令参数后面的文件或者数字要跟着指令互换位置，必须跟着对应的指令
+所有文件名可以由含空格的文件名构成
 
-应用程序向导已为您创建了此 ConsoleApplication1 应用程序。
+功能0： 命令行参数-c:输出字母频率  
+wf.exe -c ceshi6.txt 和 wf.exe -c ceshi6.txt -v dongci.txt 可以清楚的看出-v参数对结果的差别
+wf.exe -c 1.I Have a Dream.txt
 
-本文件概要介绍组成 ConsoleApplication1 应用程序的每个文件的内容。
+功能1： 命令行参数-f:输出文件中所有不重复的单词
+wf.exe -f ceshi6.txt 和wf.exe -f ceshi6.txt -v dongci.txt 可以清楚的看出-v参数对结果的差别
+wf.exe -f 1.I Have a Dream.txt
+
+功能2： 命令行参数-d:对一个目录所有文件执行功能1 再加一个-s参数可以遍历目录下所有子目录
+我的项目目录是C:\Users\Administrator\Desktop\Git\
+wf.exe -d C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2
+wf.exe -d C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -v dongci.txt 
+wf.exe -d -s C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2
+wf.exe -d -s C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -v dongci.txt 
+
+功能3：支持-n参数，输出前number个数量最多的单词
+wf.exe -d C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -n 10
+wf.exe -d C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -v dongci.txt -n 10
+wf.exe -d -s C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -n 10
+wf.exe -d -s C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\function2 -v dongci.txt -n 10
+
+功能4：命令行参数-x 功能1扩展 支持停词表
+wf.exe -x stopwords.txt  -f 1.I Have a Dream.txt
+wf.exe -x stopwords.txt  -f 1.I Have a Dream.txt -v dongci.txt
+
+功能5：命令行参数-p（ wf.exe -p <number>  <file> ） 输出number个词的短语
+wf.exe -p 5 1.I Have a Dream.txt
+wf.exe -p 5 1.I Have a Dream.txt -v dongci.txt
 
 
-ConsoleApplication1.vcxproj
-    这是使用应用程序向导生成的 VC++ 项目的主项目文件，其中包含生成该文件的 Visual C++ 的版本信息，以及有关使用应用程序向导选择的平台、配置和项目功能的信息。
 
-ConsoleApplication1.vcxproj.filters
-    这是使用“应用程序向导”生成的 VC++ 项目筛选器文件。它包含有关项目文件与筛选器之间的关联信息。在 IDE 中，通过这种关联，在特定节点下以分组形式显示具有相似扩展名的文件。例如，“.cpp”文件与“源文件”筛选器关联。
 
-ConsoleApplication1.cpp
-    这是主应用程序源文件。
-
-/////////////////////////////////////////////////////////////////////////////
-其他标准文件:
-
-StdAfx.h, StdAfx.cpp
-    这些文件用于生成名为 ConsoleApplication1.pch 的预编译头 (PCH) 文件和名为 StdAfx.obj 的预编译类型文件。
-
-/////////////////////////////////////////////////////////////////////////////
-其他注释:
-
-应用程序向导使用“TODO:”注释来指示应添加或自定义的源代码部分。
-
-/////////////////////////////////////////////////////////////////////////////
