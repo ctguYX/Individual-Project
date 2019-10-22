@@ -273,10 +273,12 @@ void function_first_step(string file, bool _x = false)
 
 /*****************************/
 // solve_f
-void printf_solve_f()
+void printf_solve_f(int number_n)
 {
 	freopen("第一步功能1.txt", "w", stdout);
 	cout << setw(max_size + 10) << setiosflags(ios::left) << "单词" << "数量" << endl;
+	if (number_n != -1)
+		sum_word = min((ll)number_n, sum_word);
 	for (int i = 0; i < sum_word; i++) {
 		cout << setw(max_size + 10 - word[i].word.size()) << setiosflags(ios::left) << word[i].word << word[i].sum << endl;
 	}
@@ -284,12 +286,12 @@ void printf_solve_f()
 
 }
 
-void solve_f(string file)
+void solve_f(string file,int number_n)
 {
 	function_first_step(file);
 	sort(word.begin(), word.end(), cmp_solve_f);
 	cout << "结果请查看debug文件夹的文件：第一步功能1.txt" << endl;
-	printf_solve_f();
+	printf_solve_f(number_n);
 }
 
 // solve_f
@@ -668,7 +670,7 @@ int main(int argc, char* argv[])
 	}
 	else if (_f == true && _x == false) { //输出文件中所有不重复的单词
 //		cout << "_f=true file=" << file_book << endl;
-		solve_f(file_book);
+		solve_f(file_book, number_n);
 	}
 	else if (_d == true) {
 	//	cout << "_d=true file_directory=" << file_directory<< endl;

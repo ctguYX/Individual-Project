@@ -8,8 +8,9 @@ wf.exe -c ceshi6.txt 和 wf.exe -c ceshi6.txt -v dongci.txt 可以清楚的看�
 wf.exe -c 1.I Have a Dream.txt
 
 功能1： 命令行参数-f:输出文件中所有不重复的单词
-wf.exe -f ceshi6.txt 和wf.exe -f ceshi6.txt -v dongci.txt 可以清楚的看出-v参数对结果的差别
+wf.exe -f ceshi6.txt 和 wf.exe -f ceshi6.txt -v dongci.txt 
 wf.exe -f 1.I Have a Dream.txt
+wf.exe -f ceshi6.txt -v dongci.txt -n 5
 
 功能2： 命令行参数-d:对一个目录所有文件执行功能1 再加一个-s参数可以遍历目录下所有子目录
 我的项目目录是C:\Users\Administrator\Desktop\Git\

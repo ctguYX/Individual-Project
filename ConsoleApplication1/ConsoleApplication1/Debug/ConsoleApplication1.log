@@ -1,4 +1,4 @@
-﻿生成启动时间为 2019/10/21 22:47:02。
+﻿生成启动时间为 2019/10/22 20:57:48。
      1>项目“C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj”在节点 2 上(Build 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -11,15 +11,15 @@
      1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(262): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
      1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(278): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(348): warning C4244: “初始化”: 从“ll”转换到“int”，可能丢失数据
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(350): warning C4244: “=”: 从“const ll”转换到“int”，可能丢失数据
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(345): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(350): warning C4244: “初始化”: 从“ll”转换到“int”，可能丢失数据
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(352): warning C4244: “=”: 从“const ll”转换到“int”，可能丢失数据
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(347): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(425): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(427): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(499): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(522): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
-     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(540): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(501): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(524): warning C4244: “参数”: 从“ll”转换到“unsigned int”，可能丢失数据
+     1>c:\users\administrator\desktop\git\individual-project\consoleapplication1\consoleapplication1\consoleapplication1.cpp(542): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(240): note: 参见“freopen”的声明
        Link:
          D:\vs2015\install\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Administrator\Desktop\Git\Individual-Project\ConsoleApplication1\Debug\wf.lib" /MACHINE:X86 Debug\ConsoleApplication1.obj
@@ -29,4 +29,4 @@
 
 已成功生成。
 
-已用时间 00:00:02.32
+已用时间 00:00:02.82
